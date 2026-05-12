@@ -4,11 +4,9 @@ version = "0.1.0"
 dependencies = [
     "pandas",
     "seaborn",
-    "matplotlib.pyplot",
-    "matplotlib_venn",
-    "numpy",
     "matplotlib",
-    "argparse"
+    "matplotlib-venn",
+    "numpy"
 ]
 
 [project.scripts]
