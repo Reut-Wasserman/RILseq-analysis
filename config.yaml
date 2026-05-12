@@ -1,0 +1,19 @@
+base_path: "base_path"
+annotation_path: "annotation_path"
+rna_types_excel: "rna_types_excel"
+experiments:
+  - "Hfq_30"
+  - "Hfq_lambda_30"
+  - "wt_lambda_30"
+  - "wt30"
+  - "Hfq_60"
+  - "Hfq_lambda_60"
+replicates:
+  - "_I"
+  - "_II"
+chr_dic:
+  "chrI": "E. coli"
+  "chrII": "lambda"
+chr_len:
+  "chrI": 4641652
+  "chrII": 48502

@@ -1,0 +1,21 @@
+[project]
+name = "RILseq_analysis"
+version = "0.1.0"
+dependencies = [
+    "pandas",
+    "seaborn",
+    "matplotlib.pyplot",
+    "matplotlib_venn",
+    "numpy",
+    "matplotlib",
+    "argparse"
+]
+
+[project.scripts]
+chimeras-venn = "RILseq_analysis_package.chimeras_venn_diagram:main"
+annotations-graphs = "RILseq_analysis_package.annotations_graphs:main"
+circos-plot = "RILseq_analysis_package.cli.circos_plot_cli:main"
+filter-genes = "RILseq_analysis_package.extract_genes_by_chr:main"
+merge-results = "RILseq_analysis_package.cli.merge_results_cli:main"
+libraries-num = "RILseq_analysis_package.cli.add_number_of_libraries_cli:main"
+sRNAs-percent = "RILseq_analysis_package.sRNAs_percent:main"
