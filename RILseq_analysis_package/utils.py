@@ -54,23 +54,9 @@ def get_only_name(gene):
     return gene.split()[3].replace(";", "").replace("\"", "")
 
 
-def get_sRNAs(rna_types_excel, organism=None):
-    if organism == "lambda":
-        return ["preS", "lpr2", "6S RNA"]
-    sRNAs = pd.read_excel(rna_types_excel, sheet_name="sRNA")
-    sRNAs = sRNAs["Name"].values.tolist()
-    if EXPERIMENT == "lambda" and organism is None:
-        return sRNAs + ["preS", "lpr2", "6S RNA"]
-    return sRNAs
-
-
 def get_RNA_types(RNA_type, rna_types_excel):
-    if RNA_type == "sRNA":
-        return get_sRNAs(rna_types_excel)
     RNAs = pd.read_excel(rna_types_excel, sheet_name=RNA_type)
     RNAs = RNAs["Name"].values.tolist()
-    if RNA_type == "oRNA":
-        RNAs += ["pspH", "RirA"]
     return RNAs
 
 

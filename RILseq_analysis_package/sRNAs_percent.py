@@ -127,7 +127,7 @@ def main():
 
     args = parser.parse_args()
     config = load_config(args.config)
-    sRNAs = get_sRNAs(config["rna_types_excel"])
+    sRNAs = get_RNA_types("sRNA", config["rna_types_excel"])
     all_genes = get_annotation(config["annotation_path"], separate_id_name=True)["name"].values.tolist()
     sRNAs = [i for i in sRNAs if i in all_genes]
     chimeras_bar_plot(args.sRNAs_amount, sRNAs, config["experiments"], config["base_path"], True, args.RNAseq_counts)
