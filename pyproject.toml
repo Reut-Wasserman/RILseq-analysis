@@ -6,7 +6,8 @@ dependencies = [
     "seaborn",
     "matplotlib",
     "matplotlib-venn",
-    "numpy"
+    "numpy",
+    "pyyaml"
 ]
 
 [project.scripts]
