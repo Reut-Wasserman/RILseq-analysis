@@ -38,13 +38,13 @@ def merge_RILseq_results(base_path, annotation_path, rna_types_excel, add_genomi
                     df["Genomic annotation of RNA2"] = df["RNA2 name"].apply(find_genomic_annotation, sRNAs_list=sRNAs_list, tRNAs_list=tRNAs_list, all_genes_list=genes_names)
                 if file.startswith("unified"):
                     sheet_name = file.replace("unified_", "").replace("_all_fragments_l25.txt_sig_interactions.txt", "").replace("_mapping", "")
-                    df.to_excel(unified, sheet_name, index=False)
+                    df.to_excel(unified, sheet_name=sheet_name, index=False)
                 else:
                     sheet_name = file.replace("cutadapt_bwa.bam_mapping_all_fragments_l25.txt_sig_interactions.txt", "S_chimeras")
                     sheet_name = sheet_name.replace("cutadapt_bwa.bam_sig_interactions.txt", "S_chimeras")
                     if sheet_name.startswith("RILSeq_"):
                         sheet_name = sheet_name.replace("RILSeq_", "")
-                    df.to_excel(single, sheet_name, index=False)
+                    df.to_excel(single, sheet_name=sheet_name, index=False)
     unified.save()
     single.save()
 
@@ -94,7 +94,7 @@ def add_number_of_libraries(base_path, experiments, replicates, chr_dic):
                          "total RNA reads2":"RNA2 in total RNA (# of reads)"}, inplace=True)
         unify_df["RNA1 chromosome"] = unify_df["RNA1 chromosome"].apply(lambda x: chr_dic[x])
         unify_df["RNA2 chromosome"] = unify_df["RNA2 chromosome"].apply(lambda x: chr_dic[x])
-        unify_df.to_excel(new, experiment, index=False)
+        unify_df.to_excel(new, sheet_name=experiment, index=False)
 
     new.save()
 
