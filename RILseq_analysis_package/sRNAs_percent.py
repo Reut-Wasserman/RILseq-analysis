@@ -91,9 +91,9 @@ def chimeras_bar_plot(sRNAs_amount, sRNAs, experiments, replicates, base_path, o
             df_reads_amount_RILseq.at[experiment, rna] = counts_table_RILseq[experiment][rna]
             if rna_seq is not None:
                 df_reads_amount_RNAseq.at[experiment, rna] = counts_table_RNAseq[experiment][rna]
-    dic = {"chimeras":df_chimeras_amount, "fragments":df_fragments_amount, "RILseq reads":df_reads_amount_RILseq}
+    dic = {"chimeras":df_chimeras_amount, "fragments":df_fragments_amount, "RILseq_reads":df_reads_amount_RILseq}
     if rna_seq is not None:
-        dic["RNAseq reads"] = df_reads_amount_RNAseq
+        dic["RNAseq_reads"] = df_reads_amount_RNAseq
     genes_colors_dic = {"other sRNAs":"gray"}
     for name, df in dic.items():
         df = convert_to_percent(df)
