@@ -16,7 +16,7 @@ def find_highest_sRNAs(df, sRNAs_amount):
     return max_values.head(sRNAs_amount).index.tolist()
 
 
-def get_counts_table(sRNAs, path):
+def get_counts_table(sRNAs, path, experiments, replicates):
     """
     Returns a data frame of the number of reads of each sRNA for each condition. The number is the sum of the read
     numbers at the different replicates.
@@ -31,8 +31,8 @@ def get_counts_table(sRNAs, path):
     df = df[df["gene"].isin(sRNAs)]
     df.index = df["gene"].values
     relevant_cols = []
-    for condition in get_experiments(with_wt=False):
-        df[condition] = df[[condition + i for i in get_replicates()]].sum(axis=1)
+    for condition in experiments:
+        df[condition] = df[[condition + i for i in replicates]].sum(axis=1)
         relevant_cols.append(condition)
 
     return df[relevant_cols]
@@ -62,7 +62,7 @@ def get_colors(genes_list, genes_colors_dic):
     return res, genes_colors_dic
 
 
-def chimeras_bar_plot(sRNAs_amount, sRNAs, experiments, base_path, only_between_chr_chimeras, rna_seq):
+def chimeras_bar_plot(sRNAs_amount, sRNAs, experiments, replicates, base_path, only_between_chr_chimeras, rna_seq):
     """
     Creates bar plots of the percentages of the sRNAs for each condition according to the number of chimers, chimeric fragments,
     RNAseq reads and RILSeq reads. The 15 sRNAs with the highest percentages are colored, the other are gray.
@@ -73,10 +73,10 @@ def chimeras_bar_plot(sRNAs_amount, sRNAs, experiments, base_path, only_between_
     df_chimeras_amount = pd.DataFrame(np.zeros((len(experiments), len(sRNAs))), columns=sRNAs, index=experiments)
     df_fragments_amount = pd.DataFrame(np.zeros((len(experiments), len(sRNAs))), columns=sRNAs, index=experiments)
     df_reads_amount_RILseq = pd.DataFrame(np.zeros((len(experiments), len(sRNAs))), columns=sRNAs, index=experiments)
-    counts_table_RILseq = get_counts_table(sRNAs, os.path.join(base_path, "all_counts_table.txt"))
+    counts_table_RILseq = get_counts_table(sRNAs, os.path.join(base_path, "all_counts_table.txt"), experiments, replicates)
     if rna_seq is not None:
         df_reads_amount_RNAseq = pd.DataFrame(np.zeros((len(experiments), len(sRNAs))), columns=sRNAs, index=experiments)
-        counts_table_RNAseq = get_counts_table(sRNAs, rna_seq["all_counts_table_file"])
+        counts_table_RNAseq = get_counts_table(sRNAs, rna_seq["all_counts_table_file"], experiments, replicates)
     for experiment in experiments:
         chimeras_df = pd.read_excel(os.path.join(base_path, r"RILseq_unified_results.xlsx"), sheet_name=experiment)
         if only_between_chr_chimeras:
@@ -130,12 +130,10 @@ def main():
     sRNAs = get_RNA_types("sRNA", config["rna_types_excel"])
     all_genes = get_annotation(config["annotation_path"], separate_id_name=True)["name"].values.tolist()
     sRNAs = [i for i in sRNAs if i in all_genes]
-    chimeras_bar_plot(args.sRNAs_amount, sRNAs, config["experiments"], config["base_path"], True, args.RNAseq_counts)
-    chimeras_bar_plot(args.sRNAs_amount, sRNAs, config["experiments"], config["base_path"], False, args.RNAseq_counts)
+    chimeras_bar_plot(args.sRNAs_amount, sRNAs, config["experiments"], config["replicates"], config["base_path"], True, args.RNAseq_counts)
+    chimeras_bar_plot(args.sRNAs_amount, sRNAs, config["experiments"], config["replicates"], config["base_path"], False, args.RNAseq_counts)
 
 
-# if __name__ == '__main__':
-#     main()
 
 
 

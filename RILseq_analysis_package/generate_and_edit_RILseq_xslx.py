@@ -1,7 +1,6 @@
 import os
 import pandas as pd
-from RILseq_analysis_package.utils import get_annotation, get_RNA_types, get_replicates
-# from RILseq_analysis_package.defaults import *
+from RILseq_analysis_package.utils import get_annotation, get_RNA_types
 
 
 def find_genomic_annotation(gene, sRNAs_list, tRNAs_list, all_genes_list):

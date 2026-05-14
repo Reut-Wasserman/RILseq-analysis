@@ -3,7 +3,6 @@ import os
 import seaborn as sns
 import matplotlib.pyplot as plt
 from RILseq_analysis_package.utils import get_annotation, get_RNA_types, load_config
-from RILseq_analysis_package.defaults import *
 import argparse
 
 

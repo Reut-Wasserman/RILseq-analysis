@@ -1,7 +1,6 @@
 import os
 import pandas as pd
-from RILseq_analysis_package.utils import get_annotation, get_experiments
-from RILseq_analysis_package.defaults import *
+from RILseq_analysis_package.utils import get_annotation
 
 
 def convert_to_kb_mb(range_lst):
@@ -155,28 +154,6 @@ def two_genomes_circos_plot_real_proportions(base_path, chr_sizes, chr_dic, mark
             chimeras_df["RNA2 chromosome"][chimeras_df["RNA2 chromosome"] == genome] = genome_name
 
         chimeras_df.to_csv(os.path.join(base_path, "circos_plots", f"{experiment}_two_genomes_chimeras_real_proportions.csv"),
-                           columns=["RNA1 chromosome", "Start of RNA1 first read", "Start of RNA1 last read", "RNA2 chromosome", "Start of RNA2 last read", "Start of RNA2 first read", "PlotColor"],
-                           header=["Chromosome", "chromStart", "chromEnd", "Chromosome.1", "chromStart.1", "chromEnd.1", "PlotColor"], index=False)
-
-
-def E_coli_circos_plot():
-    """
-    Generates files required for creating circos plot of E. coli. Use the output files for circos_plot.R script.
-    """
-    E_coli_range = list(range(0, 4641652, 350000))
-    scale_df = pd.DataFrame({"chromStart": E_coli_range, "chromEnd": [i + 1 for i in E_coli_range], "Gene": [str(i) for i in E_coli_range]})
-    scale_df["Chromosome"] = "E.coli"
-    scale_df.to_csv(os.path.join(BASE_PATH, "RILseq\circos_plots\E_coli_scale.csv"),
-                    columns=["Chromosome", "chromStart", "chromEnd", "Gene"],
-                    header=["Chromosome", "chromStart", "chromEnd", "Gene"], index=False)
-
-    for experiment in get_experiments(False):
-        chimeras_df = pd.read_excel(os.path.join(BASE_PATH, "RILseq\RILseq_unified_results.xlsx"), sheet_name=experiment)
-        chimeras_df = chimeras_df[(chimeras_df["RNA1 chromosome"] == "chrI") & (chimeras_df["RNA2 chromosome"] == "chrI")]
-        chimeras_df["RNA1 chromosome"] = "E.coli"
-        chimeras_df["RNA2 chromosome"] = "E.coli"
-        chimeras_df["PlotColor"] = "gray48"
-        chimeras_df.to_csv(os.path.join(BASE_PATH, f"RILseq\circos_plots\E_coli_chimeras_{experiment}.csv"),
                            columns=["RNA1 chromosome", "Start of RNA1 first read", "Start of RNA1 last read", "RNA2 chromosome", "Start of RNA2 last read", "Start of RNA2 first read", "PlotColor"],
                            header=["Chromosome", "chromStart", "chromEnd", "Chromosome.1", "chromStart.1", "chromEnd.1", "PlotColor"], index=False)
 

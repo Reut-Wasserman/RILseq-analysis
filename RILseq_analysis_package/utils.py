@@ -82,14 +82,3 @@ def get_E_coli_lambda_experiments(with_wt):
             res.append(experiment + time)
     return res
 
-
-def get_experiments(with_wt=True):
-    if EXPERIMENT == "lambda":
-        return get_E_coli_lambda_experiments(with_wt)
-
-
-def get_replicates():
-    if EXPERIMENT == "lambda":
-        return ["_I", "_II"]
-
-print(get_E_coli_lambda_experiments(True))
