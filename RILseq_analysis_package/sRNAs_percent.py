@@ -130,8 +130,8 @@ def main():
     sRNAs = get_RNA_types("sRNA", config["rna_types_excel"])
     all_genes = get_annotation(config["annotation_path"], separate_id_name=True)["name"].values.tolist()
     sRNAs = [i for i in sRNAs if i in all_genes]
-    chimeras_bar_plot(args.sRNAs_amount, sRNAs, config["experiments"], config["replicates"], config["base_path"], True, int(args.RNAseq_counts))
-    chimeras_bar_plot(args.sRNAs_amount, sRNAs, config["experiments"], config["replicates"], config["base_path"], False, int(args.RNAseq_counts))
+    chimeras_bar_plot(int(args.sRNAs_amount), sRNAs, config["experiments"], config["replicates"], config["base_path"], True, args.RNAseq_counts)
+    chimeras_bar_plot(int(args.sRNAs_amount), sRNAs, config["experiments"], config["replicates"], config["base_path"], False, args.RNAseq_counts)
 
 
 
