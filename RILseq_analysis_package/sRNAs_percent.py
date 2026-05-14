@@ -80,7 +80,7 @@ def chimeras_bar_plot(sRNAs_amount, sRNAs, experiments, replicates, base_path, o
     for experiment in experiments:
         chimeras_df = pd.read_excel(os.path.join(base_path, r"RILseq_unified_results.xlsx"), sheet_name=experiment)
         if only_between_chr_chimeras:
-            chimeras_df = chimeras_df[chimeras_df["RNA1_chromosome"] != chimeras_df["RNA2_chromosome"]]
+            chimeras_df = chimeras_df[chimeras_df["RNA1 chromosome"] != chimeras_df["RNA2 chromosome"]]
             # chromosomes = list(chr_dic.keys())
             # chimeras_df = chimeras_df[((chimeras_df["RNA1 chromosome"] == chromosomes[0]) & (chimeras_df["RNA2 chromosome"] == chromosomes[1])) |
             #                           ((chimeras_df["RNA1 chromosome"] == chromosomes[1]) & (chimeras_df["RNA2 chromosome"] == chromosomes[0]))]
