@@ -81,7 +81,7 @@ def add_number_of_libraries(base_path, experiments, replicates, chr_dic):
         for i in replicates:
             replicate_name = f"{experiment + i}_S_chimeras"
             if replicate_name in single_results_excel.sheet_names:
-                single1 = single_results_excel.parse(f"{replicate_name}_S_chimeras")
+                single1 = single_results_excel.parse(replicate_name)
                 singles.append(single1)
 
         unify_df = pd.read_excel(os.path.join(base_path, "RILseq_unified_results.xlsx"), sheet_name=experiment)
