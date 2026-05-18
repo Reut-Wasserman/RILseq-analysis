@@ -74,30 +74,31 @@ def find_number_of_libraries(unify_chimera, singles):
 
 
 def add_number_of_libraries(base_path, experiments, replicates, chr_dic):
-    new = pd.ExcelWriter(os.path.join(base_path, 'RILseq_unified_results_with_number_of_libraries.xlsx'))
+    # new = pd.ExcelWriter(os.path.join(base_path, 'RILseq_unified_results_with_number_of_libraries.xlsx'))
     single_results_excel = pd.ExcelFile(os.path.join(base_path, "RILseq_single_results.xlsx"))
-    for experiment in experiments:
-        singles = []
-        for i in replicates:
-            replicate_name = f"{experiment + i}_S_chimeras"
-            if replicate_name in single_results_excel.sheet_names:
-                single1 = single_results_excel.parse(replicate_name)
-                singles.append(single1)
+    with pd.ExcelWriter(os.path.join(base_path, 'RILseq_unified_results_with_number_of_libraries.xlsx')) as new:
+        for experiment in experiments:
+            singles = []
+            for i in replicates:
+                replicate_name = f"{experiment + i}_S_chimeras"
+                if replicate_name in single_results_excel.sheet_names:
+                    single1 = single_results_excel.parse(replicate_name)
+                    singles.append(single1)
 
-        unify_df = pd.read_excel(os.path.join(base_path, "RILseq_unified_results.xlsx"), sheet_name=experiment)
+            unify_df = pd.read_excel(os.path.join(base_path, "RILseq_unified_results.xlsx"), sheet_name=experiment)
 
-        unify_df["# of libraries"] = unify_df.apply(find_number_of_libraries, singles=singles, axis=1)
-        unify_df = unify_df[["RNA1 name", "RNA2 name", "interactions", "# of libraries", "Normalized Odds Ratio (NOR)", "odds ratio", "Fisher's exact test p-value", "Genomic annotation of RNA1", "Genomic annotation of RNA2", "RNA1 description", "RNA2 description", "RNA1 chromosome", "Start of RNA1 first read", "Start of RNA1 last read", "RNA1 strand", "RNA2 chromosome", "Start of RNA2 last read", "Start of RNA2 first read", "RNA2 strand", "other interactions of RNA1", "other interactions of RNA2", "total other interactions", "total RNA reads1", "total RNA reads2", "lib norm IP RNA1", "lib norm IP RNA2", "lib norm total RNA1", "lib norm total RNA2", "IP/total ratio1", "IP/total ratio2", "RNA1 EcoCyc ID", "RNA2 EcoCyc ID"]]
-        unify_df.rename(columns={"interactions":"# of chimeric fragments", "Normalized Odds Ratio (NOR)":"Normalized Odds Ratio", "odds ratio":"Odds Ratio",
-                         "Start of RNA1 first read":"RNA1 from", "Start of RNA1 last read":"RNA1 to", "Start of RNA2 last read":"RNA2 from",
-                         "Start of RNA2 first read":"RNA2 to", "other interactions of RNA1":"other fragments of RNA1", "other interactions of RNA2":"other fragments of RNA2",
-                         "total other interactions":"Total other fragments", "total RNA reads1":"RNA1 in total RNA (# of reads)",
-                         "total RNA reads2":"RNA2 in total RNA (# of reads)"}, inplace=True)
-        unify_df["RNA1 chromosome"] = unify_df["RNA1 chromosome"].apply(lambda x: chr_dic[x])
-        unify_df["RNA2 chromosome"] = unify_df["RNA2 chromosome"].apply(lambda x: chr_dic[x])
-        unify_df.to_excel(new, sheet_name=experiment, index=False)
+            unify_df["# of libraries"] = unify_df.apply(find_number_of_libraries, singles=singles, axis=1)
+            unify_df = unify_df[["RNA1 name", "RNA2 name", "interactions", "# of libraries", "Normalized Odds Ratio (NOR)", "odds ratio", "Fisher's exact test p-value", "Genomic annotation of RNA1", "Genomic annotation of RNA2", "RNA1 description", "RNA2 description", "RNA1 chromosome", "Start of RNA1 first read", "Start of RNA1 last read", "RNA1 strand", "RNA2 chromosome", "Start of RNA2 last read", "Start of RNA2 first read", "RNA2 strand", "other interactions of RNA1", "other interactions of RNA2", "total other interactions", "total RNA reads1", "total RNA reads2", "lib norm IP RNA1", "lib norm IP RNA2", "lib norm total RNA1", "lib norm total RNA2", "IP/total ratio1", "IP/total ratio2", "RNA1 EcoCyc ID", "RNA2 EcoCyc ID"]]
+            unify_df.rename(columns={"interactions":"# of chimeric fragments", "Normalized Odds Ratio (NOR)":"Normalized Odds Ratio", "odds ratio":"Odds Ratio",
+                             "Start of RNA1 first read":"RNA1 from", "Start of RNA1 last read":"RNA1 to", "Start of RNA2 last read":"RNA2 from",
+                             "Start of RNA2 first read":"RNA2 to", "other interactions of RNA1":"other fragments of RNA1", "other interactions of RNA2":"other fragments of RNA2",
+                             "total other interactions":"Total other fragments", "total RNA reads1":"RNA1 in total RNA (# of reads)",
+                             "total RNA reads2":"RNA2 in total RNA (# of reads)"}, inplace=True)
+            unify_df["RNA1 chromosome"] = unify_df["RNA1 chromosome"].apply(lambda x: chr_dic[x])
+            unify_df["RNA2 chromosome"] = unify_df["RNA2 chromosome"].apply(lambda x: chr_dic[x])
+            unify_df.to_excel(new, sheet_name=experiment, index=False)
 
-    new.save()
+    # new.save()
 
 
 # if __name__ == '__main__':
