@@ -24,29 +24,30 @@ def find_genomic_annotation(gene, sRNAs_list, tRNAs_list, all_genes_list):
 
 
 def merge_RILseq_results(base_path, annotation_path, rna_types_excel, add_genomic_annotation=True):
-    unified = pd.ExcelWriter(os.path.join(base_path, 'RILseq_unified_results.xlsx'))
-    single = pd.ExcelWriter(os.path.join(base_path, 'RILseq_single_results.xlsx'))
-    for file in os.listdir(base_path):
-        if file.endswith("sig_interactions.txt"):
-            df = pd.read_csv(os.path.join(base_path, file), sep="\t")
-            if not df.empty:
-                if add_genomic_annotation:
-                    sRNAs_list = get_RNA_types("sRNA", rna_types_excel)
-                    tRNAs_list = get_RNA_types("tRNA", rna_types_excel)
-                    genes_names = get_annotation(annotation_path, separate_id_name=True)["name"].values.tolist()
-                    df["Genomic annotation of RNA1"] = df["RNA1 name"].apply(find_genomic_annotation, sRNAs_list=sRNAs_list, tRNAs_list=tRNAs_list, all_genes_list=genes_names)
-                    df["Genomic annotation of RNA2"] = df["RNA2 name"].apply(find_genomic_annotation, sRNAs_list=sRNAs_list, tRNAs_list=tRNAs_list, all_genes_list=genes_names)
-                if file.startswith("unified"):
-                    sheet_name = file.replace("unified_", "").replace("_all_fragments_l25.txt_sig_interactions.txt", "").replace("_mapping", "")
-                    df.to_excel(unified, sheet_name=sheet_name, index=False)
-                else:
-                    sheet_name = file.replace("cutadapt_bwa.bam_mapping_all_fragments_l25.txt_sig_interactions.txt", "S_chimeras")
-                    sheet_name = sheet_name.replace("cutadapt_bwa.bam_sig_interactions.txt", "S_chimeras")
-                    if sheet_name.startswith("RILSeq_"):
-                        sheet_name = sheet_name.replace("RILSeq_", "")
-                    df.to_excel(single, sheet_name=sheet_name, index=False)
-    unified.save()
-    single.save()
+    # unified = pd.ExcelWriter(os.path.join(base_path, 'RILseq_unified_results.xlsx'))
+    # single = pd.ExcelWriter(os.path.join(base_path, 'RILseq_single_results.xlsx'))
+    with pd.ExcelWriter(os.path.join(base_path, 'RILseq_unified_results.xlsx')) as unified, pd.ExcelWriter(os.path.join(base_path, 'RILseq_single_results.xlsx')) as single:
+        for file in os.listdir(base_path):
+            if file.endswith("sig_interactions.txt"):
+                df = pd.read_csv(os.path.join(base_path, file), sep="\t")
+                if not df.empty:
+                    if add_genomic_annotation:
+                        sRNAs_list = get_RNA_types("sRNA", rna_types_excel)
+                        tRNAs_list = get_RNA_types("tRNA", rna_types_excel)
+                        genes_names = get_annotation(annotation_path, separate_id_name=True)["name"].values.tolist()
+                        df["Genomic annotation of RNA1"] = df["RNA1 name"].apply(find_genomic_annotation, sRNAs_list=sRNAs_list, tRNAs_list=tRNAs_list, all_genes_list=genes_names)
+                        df["Genomic annotation of RNA2"] = df["RNA2 name"].apply(find_genomic_annotation, sRNAs_list=sRNAs_list, tRNAs_list=tRNAs_list, all_genes_list=genes_names)
+                    if file.startswith("unified"):
+                        sheet_name = file.replace("unified_", "").replace("_all_fragments_l25.txt_sig_interactions.txt", "").replace("_mapping", "")
+                        df.to_excel(unified, sheet_name=sheet_name, index=False)
+                    else:
+                        sheet_name = file.replace("cutadapt_bwa.bam_mapping_all_fragments_l25.txt_sig_interactions.txt", "S_chimeras")
+                        sheet_name = sheet_name.replace("cutadapt_bwa.bam_sig_interactions.txt", "S_chimeras")
+                        if sheet_name.startswith("RILSeq_"):
+                            sheet_name = sheet_name.replace("RILSeq_", "")
+                        df.to_excel(single, sheet_name=sheet_name, index=False)
+    # unified.save()
+    # single.save()
 
 
 def find_number_of_libraries_helper(name1, name2, start1, end1, start2, end2, chr1, chr2, strand1, strand2, df):
