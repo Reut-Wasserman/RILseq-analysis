@@ -108,8 +108,8 @@ def two_genomes_circos_plot_half_circle(base_path, chr_sizes, chr_dic, present_c
         chimeras_df = add_color(chimeras_df, chr1, chr2)
 
         for genome, genome_name in chr_dic.items():
-            chimeras_df["RNA1 chromosome"][chimeras_df["RNA1 chromosome"] == genome] = genome_name
-            chimeras_df["RNA2 chromosome"][chimeras_df["RNA2 chromosome"] == genome] = genome_name
+            chimeras_df.loc[chimeras_df["RNA1 chromosome"] == genome, "RNA1 chromosome"] = genome_name
+            chimeras_df.loc[chimeras_df["RNA2 chromosome"] == genome, "RNA2 chromosome"] = genome_name
 
         file_name = f"{experiment}_two_genomes_chimeras_each_half_circle"
         if gene_list is not None:
@@ -151,8 +151,8 @@ def two_genomes_circos_plot_real_proportions(base_path, chr_sizes, chr_dic, mark
         chimeras_df = add_color(chimeras_df, chr1, chr2)
 
         for genome, genome_name in chr_dic.items():
-            chimeras_df["RNA1 chromosome"][chimeras_df["RNA1 chromosome"] == genome] = genome_name
-            chimeras_df["RNA2 chromosome"][chimeras_df["RNA2 chromosome"] == genome] = genome_name
+            chimeras_df.loc[chimeras_df["RNA1 chromosome"] == genome, "RNA1 chromosome"] = genome_name
+            chimeras_df.loc[chimeras_df["RNA2 chromosome"] == genome, "RNA2 chromosome"] = genome_name
 
         chimeras_df.to_csv(os.path.join(base_path, "circos_plots", f"{experiment}_two_genomes_chimeras_real_proportions.csv"),
                            columns=["RNA1 chromosome", "Start of RNA1 first read", "Start of RNA1 last read", "RNA2 chromosome", "Start of RNA2 last read", "Start of RNA2 first read", "PlotColor"],
