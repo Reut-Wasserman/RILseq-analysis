@@ -102,8 +102,9 @@ def two_genomes_circos_plot_half_circle(base_path, chr_sizes, chr_dic, present_c
 
         for i in ("1", "2"):
             for j in [f"Start of RNA{i} first read", f"Start of RNA{i} last read"]:
-                chimeras_df[j][chimeras_df[f"RNA{i} chromosome"] == chr_to_multiply] *= multiply_factor
-        chr1, chr2 = chr_sizes.keys
+                # chimeras_df[j][chimeras_df[f"RNA{i} chromosome"] == chr_to_multiply] *= multiply_factor
+                chimeras_df.loc[chimeras_df[f"RNA{i} chromosome"] == chr_to_multiply,j] *= multiply_factor
+        chr1, chr2 = chr_sizes.keys()
         chimeras_df = add_color(chimeras_df, chr1, chr2)
 
         for genome, genome_name in chr_dic.items():
@@ -131,7 +132,7 @@ def two_genomes_circos_plot_real_proportions(base_path, chr_sizes, chr_dic, mark
     #                        columns=["Chromosome", "chromStart", "chromEnd", "Gene"],
     #                        header=["Chromosome", "chromStart", "chromEnd", "Gene"], index=False)
 
-    chr1, chr2 = chr_sizes.keys
+    chr1, chr2 = chr_sizes.keys()
     chrI_range = list(range(0, chr_sizes[chr1], mark_step1))
     chrII_range = list(range(0, chr_sizes[chr2], mark_step2))
     scale_df = pd.DataFrame({"Chromosome":[chr_sizes[chr1]]*len(chrI_range) + [chr_sizes[chr2]]*len(chrII_range),
@@ -165,7 +166,5 @@ def two_genomes_circos_plot_real_proportions(base_path, chr_sizes, chr_dic, mark
 #     two_genomes_circos_plot_half_circle(["lpr2"])
 #     two_genomes_circos_plot_real_proportions()
 #     E_coli_circos_plot()
-
-
 
 
