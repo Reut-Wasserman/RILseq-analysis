@@ -6,11 +6,7 @@ import os
 def main():
     parser = argparse.ArgumentParser()
 
-    parser.add_argument(
-        "plot_type",
-        choices=["two_genomes_half_circle", "two_genomes_real_proportions"],
-        help="Which circos plot to generate"
-    )
+    parser.add_argument("plot_type", choices=["two_genomes_half_circle", "two_genomes_real_proportions"], help="Which circos plot to generate")
     parser.add_argument("config")
     parser.add_argument("--mark_step1", default=200000, help="interval of the scale marks of the first chromosome")
     parser.add_argument("--mark_step2", default=48500, help="interval of the scale marks of the second chromosome")
@@ -26,6 +22,6 @@ def main():
         os.makedirs(circos_path)
 
     if args.plot_type == "two_genomes_half_circle":
-        circos_plot.two_genomes_circos_plot_half_circle(circos_path, config["chr_sizes"], config["chr_dic"], args.present_chr, args.gene_list)
+        circos_plot.two_genomes_circos_plot_half_circle(circos_path, config["chr_len"], config["chr_dic"], args.present_chr, args.gene_list)
     elif args.plot_type == "two_genomes_real_proportions":
-        circos_plot.two_genomes_circos_plot_real_proportions(circos_path, config["chr_sizes"], config["chr_dic"], args.mark_step1, args.mark_step2, args.present_chr)
+        circos_plot.two_genomes_circos_plot_real_proportions(circos_path, config["chr_len"], config["chr_dic"], args.mark_step1, args.mark_step2, args.present_chr)
