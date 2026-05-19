@@ -22,6 +22,6 @@ def main():
         os.makedirs(circos_path)
 
     if args.plot_type == "two_genomes_half_circle":
-        circos_plot.two_genomes_circos_plot_half_circle(circos_path, config["chr_len"], config["chr_dic"], args.present_chr, args.gene_list)
+        circos_plot.two_genomes_circos_plot_half_circle(base_path, config["chr_len"], config["chr_dic"], args.present_chr, args.gene_list)
     elif args.plot_type == "two_genomes_real_proportions":
-        circos_plot.two_genomes_circos_plot_real_proportions(circos_path, config["chr_len"], config["chr_dic"], args.mark_step1, args.mark_step2, args.present_chr)
+        circos_plot.two_genomes_circos_plot_real_proportions(base_path, config["chr_len"], config["chr_dic"], args.mark_step1, args.mark_step2, args.present_chr)
