@@ -38,7 +38,7 @@ def get_scale_lists(chr_sizes, chr_dic, factor, kb_mb):
 
     ranges = {}
     for chrom in chr_sizes.keys():
-        ranges[chrom] = list(range(0, int(chr_sizes[chrom]), 10 ** (len(chr_sizes[chrom]) - factor)))
+        ranges[chrom] = list(range(0, int(chr_sizes[chrom]), 10 ** (len(str(chr_sizes[chrom])) - factor)))
 
     chromosome = []
     for i in ranges.keys():
@@ -165,6 +165,7 @@ def two_genomes_circos_plot_real_proportions(base_path, chr_sizes, chr_dic, mark
 #     two_genomes_circos_plot_half_circle(["lpr2"])
 #     two_genomes_circos_plot_real_proportions()
 #     E_coli_circos_plot()
+
 
 
 
