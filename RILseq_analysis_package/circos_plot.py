@@ -66,6 +66,7 @@ def add_color(chimeras_df, chr1, chr2):
     """
     Add a column of colors to the chimeras. Set different colors to chimeras from different genomes and to chimeras between genomes.
     """
+    chimeras_df["PlotColor"] = None
     chimeras_df.loc[(chimeras_df["RNA1 chromosome"] == chr1) & (chimeras_df["RNA2 chromosome"] == chr1), "PlotColor"] = "gray48"
     chimeras_df.loc[(chimeras_df["RNA1 chromosome"] == chr1) & (chimeras_df["RNA2 chromosome"] == chr2), "PlotColor"] = "blue"
     chimeras_df.loc[(chimeras_df["RNA1 chromosome"] == chr2) & (chimeras_df["RNA2 chromosome"] == chr1), "PlotColor"] = "blue"
