@@ -134,7 +134,7 @@ def two_genomes_circos_plot_real_proportions(base_path, chr_sizes, chr_dic, mark
     chr1, chr2 = chr_sizes.keys()
     chrI_range = list(range(0, chr_sizes[chr1], mark_step1))
     chrII_range = list(range(0, chr_sizes[chr2], mark_step2))
-    scale_df = pd.DataFrame({"Chromosome":[chr1]*len(chrI_range) + [chr2]*len(chrII_range),
+    scale_df = pd.DataFrame({"Chromosome":[chr_dic[chr1]]*len(chrI_range) + [chr_dic[chr2]]*len(chrII_range),
                              "chromStart":chrI_range + chrII_range,
                              "chromEnd":[i+1 for i in chrI_range] +[i+1 for i in chrII_range],
                              "Gene":convert_to_kb_mb(chrI_range+chrII_range)})
