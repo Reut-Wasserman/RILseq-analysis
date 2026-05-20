@@ -10,7 +10,7 @@ def main():
     parser.add_argument("config")
     parser.add_argument("--mark_step1", default=200000, help="interval of the scale marks of the first chromosome")
     parser.add_argument("--mark_step2", default=48500, help="interval of the scale marks of the second chromosome")
-    parser.add_argument("--gene_list", default=None,
+    parser.add_argument("--genes", default=None,
                         help="Plot only the chimeras of the genes in the list.")
     parser.add_argument("--present_chr", default=None, help="Plot only the chimeras of the given chromosome")
     args = parser.parse_args()
@@ -21,7 +21,12 @@ def main():
     if not os.path.exists(circos_path):
         os.makedirs(circos_path)
 
+    if args.genes is not None:
+        genes_list = args.genes.split(",")
+    else:
+        genes_list = None
+
     if args.plot_type == "two_genomes_half_circle":
-        circos_plot.two_genomes_circos_plot_half_circle(base_path, config["chr_len"], config["chr_dic"], args.present_chr, args.gene_list)
+        circos_plot.two_genomes_circos_plot_half_circle(base_path, config["chr_len"], config["chr_dic"], args.present_chr, genes_list)
     elif args.plot_type == "two_genomes_real_proportions":
         circos_plot.two_genomes_circos_plot_real_proportions(base_path, config["chr_len"], config["chr_dic"], args.mark_step1, args.mark_step2, args.present_chr)
