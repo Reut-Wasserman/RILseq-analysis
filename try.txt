@@ -1,0 +1,30 @@
+plot_type <- "real_proportions"
+#### E. coli and lambda circos plot ####
+
+for (experiment in experiments){
+  my_cyto.info <- data.frame(Chromosome = c(genome1, genome2), chromStart = c(0,0), chromEnd=c(genome1_length,genome2_length), Band=c(genome1, genome2), Stain=c("gpos25", "acen"))
+  RCircos.Set.Core.Components(my_cyto.info, chr.exclude=NULL, tracks.inside=2, tracks.outside=0)
+
+  params <- RCircos.Get.Plot.Parameters()
+  params$base.per.unit <- 22.768689
+  params$chrom.paddings <- 2500
+  params$text.size <- 0.4
+  RCircos.Reset.Plot.Parameters(params)
+
+  file <- paste(path, experiment, "_", plot_type, ".pdf", sep="")
+  pdf(file = file, height = 8, width = 8)
+  RCircos.Set.Plot.Area()
+  RCircos.Draw.Chromosome.Ideogram()
+  RCircos.Label.Chromosome.Names()
+
+
+  scale_data <- read.csv(paste(path, "two_genomes_scale_", plot_type, ".csv", sep=""))
+
+  RCircos.Gene.Name.Plot(scale_data, name.col = 4, track.num = 1, side="in")
+
+
+  my_link_data = read.csv(paste(path, experiment, "_two_genomes_chimeras_real_proportions.csv", sep=""))
+  RCircos.Link.Plot(my_link_data, track.num = 2, lineWidth=rep(0.00001, nrow(my_link_data)))
+
+  dev.off()
+}

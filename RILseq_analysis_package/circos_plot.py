@@ -84,13 +84,13 @@ def two_genomes_circos_plot_half_circle(base_path, chr_sizes, chr_dic, present_c
     scale_df = pd.DataFrame({"Chromosome":chromosome, "chromStart":chrom_start, "chromEnd":[i+1 for i in chrom_start],
                              "Gene":gene})
 
-    scale_df.to_csv(os.path.join(base_path, "circos_plots", "two_genomes_scale_each_half_circle.csv"), index=False)
+    scale_df.to_csv(os.path.join(base_path, "circos_plots", "two_genomes_scale_half_circles.csv"), index=False)
 
     chromosome, chrom_start, gene, _, _ = get_scale_lists(chr_sizes, chr_dic, 1, kb_mb=True)
 
     scale_df = pd.DataFrame({"Chromosome":chromosome, "chromStart":chrom_start, "chromEnd":[i+1 for i in chrom_start],
                              "Gene":gene})
-    scale_df.to_csv(os.path.join(base_path, "circos_plots", "two_genomes_scale_numbers_each_half_circle.csv"), index=False)
+    scale_df.to_csv(os.path.join(base_path, "circos_plots", "two_genomes_scale_numbers_half_circles.csv"), index=False)
 
     RILseq_excel = pd.ExcelFile(os.path.join(base_path, "RILseq_unified_results.xlsx"))
     for experiment in RILseq_excel.sheet_names:
@@ -111,16 +111,16 @@ def two_genomes_circos_plot_half_circle(base_path, chr_sizes, chr_dic, present_c
             chimeras_df.loc[chimeras_df["RNA1 chromosome"] == genome, "RNA1 chromosome"] = genome_name
             chimeras_df.loc[chimeras_df["RNA2 chromosome"] == genome, "RNA2 chromosome"] = genome_name
 
-        file_name = f"{experiment}_two_genomes_chimeras_each_half_circle"
+        file_name = f"{experiment}_two_genomes_chimeras_half_circles"
         if gene_list is not None:
             genes = "_".join(gene_list)
-            file_name = f"{genes}_chimeras_{experiment}"
+            file_name += genes
         chimeras_df.to_csv(os.path.join(base_path, "circos_plots", f"{file_name}.csv"),
                            columns=["RNA1 chromosome", "Start of RNA1 first read", "Start of RNA1 last read", "RNA2 chromosome", "Start of RNA2 last read", "Start of RNA2 first read", "PlotColor"],
                            header=["Chromosome", "chromStart", "chromEnd", "Chromosome.1", "chromStart.1", "chromEnd.1", "PlotColor"], index=False)
 
 
-def two_genomes_circos_plot_real_proportions(base_path, chr_sizes, chr_dic, mark_step1, mark_step2, present_chr=None):
+def two_genomes_circos_plot_real_proportions(base_path, chr_sizes, chr_dic, mark_step1, mark_step2, present_chr=None, gene_list=None):
     """
     Generates files required for creating circos plot of two genomes. Use the output files for circos_plot.R script.
     """
@@ -145,6 +145,8 @@ def two_genomes_circos_plot_real_proportions(base_path, chr_sizes, chr_dic, mark
     for experiment in RILseq_excel.sheet_names:
         chimeras_df = RILseq_excel.parse(experiment)
 
+        if gene_list is not None:
+            chimeras_df = chimeras_df[(chimeras_df["RNA1 name"].isin(gene_list)) | (chimeras_df["RNA2 name"].isin(gene_list))]
         if present_chr:
             chimeras_df = chimeras_df[(chimeras_df["RNA1 chromosome"] == present_chr) & (chimeras_df["RNA2 chromosome"] == present_chr)]
 
@@ -154,7 +156,11 @@ def two_genomes_circos_plot_real_proportions(base_path, chr_sizes, chr_dic, mark
             chimeras_df.loc[chimeras_df["RNA1 chromosome"] == genome, "RNA1 chromosome"] = genome_name
             chimeras_df.loc[chimeras_df["RNA2 chromosome"] == genome, "RNA2 chromosome"] = genome_name
 
-        chimeras_df.to_csv(os.path.join(base_path, "circos_plots", f"{experiment}_two_genomes_chimeras_real_proportions.csv"),
+        file_name = f"{experiment}_two_genomes_chimeras_real_proportions"
+        if gene_list is not None:
+            genes = "_".join(gene_list)
+            file_name += genes
+        chimeras_df.to_csv(os.path.join(base_path, "circos_plots", f"{file_name}.csv"),
                            columns=["RNA1 chromosome", "Start of RNA1 first read", "Start of RNA1 last read", "RNA2 chromosome", "Start of RNA2 last read", "Start of RNA2 first read", "PlotColor"],
                            header=["Chromosome", "chromStart", "chromEnd", "Chromosome.1", "chromStart.1", "chromEnd.1", "PlotColor"], index=False)
 

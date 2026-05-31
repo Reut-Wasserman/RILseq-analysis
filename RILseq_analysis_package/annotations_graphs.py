@@ -104,6 +104,8 @@ def get_RNAs_type_fractions(df, options, chimeras_or_fragments):
     to the amount of fragments.
     :return: a list of the fraction of each annotation
     """
+    if df.empty:
+        return [0] * len(options)
     amount_dic = {i:0 for i in options}
     for RNA in "12":
         small_df = df[[f"RNA{RNA}_annotation", "interactions"]]

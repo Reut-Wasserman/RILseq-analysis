@@ -62,7 +62,7 @@ def get_colors(genes_list, genes_colors_dic):
     return res, genes_colors_dic
 
 
-def chimeras_bar_plot(sRNAs_amount, sRNAs, experiments, replicates, base_path, only_between_chr_chimeras, rna_seq):
+def chimeras_bar_plot(sRNAs_amount, sRNAs, experiments, replicates, base_path, only_between_chr_chimeras, rna_seq_counts):
     """
     Creates bar plots of the percentages of the sRNAs for each condition according to the number of chimers, chimeric fragments,
     RNAseq reads and RILSeq reads. The 15 sRNAs with the highest percentages are colored, the other are gray.
@@ -74,9 +74,9 @@ def chimeras_bar_plot(sRNAs_amount, sRNAs, experiments, replicates, base_path, o
     df_fragments_amount = pd.DataFrame(np.zeros((len(experiments), len(sRNAs))), columns=sRNAs, index=experiments)
     df_reads_amount_RILseq = pd.DataFrame(np.zeros((len(experiments), len(sRNAs))), columns=sRNAs, index=experiments)
     counts_table_RILseq = get_counts_table(sRNAs, os.path.join(base_path, "all_counts_table.txt"), experiments, replicates)
-    if rna_seq is not None:
+    if rna_seq_counts is not None:
         df_reads_amount_RNAseq = pd.DataFrame(np.zeros((len(experiments), len(sRNAs))), columns=sRNAs, index=experiments)
-        counts_table_RNAseq = get_counts_table(sRNAs, rna_seq["all_counts_table_file"], experiments, replicates)
+        counts_table_RNAseq = get_counts_table(sRNAs, rna_seq_counts, experiments, replicates)
     for experiment in experiments:
         chimeras_df = pd.read_excel(os.path.join(base_path, r"RILseq_unified_results.xlsx"), sheet_name=experiment)
         if only_between_chr_chimeras:
@@ -89,10 +89,10 @@ def chimeras_bar_plot(sRNAs_amount, sRNAs, experiments, replicates, base_path, o
             df_chimeras_amount.at[experiment, rna] = srna_chimeras.shape[0]
             df_fragments_amount.at[experiment, rna] = srna_chimeras["interactions"].sum()
             df_reads_amount_RILseq.at[experiment, rna] = counts_table_RILseq[experiment][rna]
-            if rna_seq is not None:
+            if rna_seq_counts is not None:
                 df_reads_amount_RNAseq.at[experiment, rna] = counts_table_RNAseq[experiment][rna]
     dic = {"chimeras":df_chimeras_amount, "fragments":df_fragments_amount, "RILseq_reads":df_reads_amount_RILseq}
-    if rna_seq is not None:
+    if rna_seq_counts is not None:
         dic["RNAseq_reads"] = df_reads_amount_RNAseq
     genes_colors_dic = {"other sRNAs":"gray"}
     for name, df in dic.items():
@@ -122,7 +122,7 @@ def chimeras_bar_plot(sRNAs_amount, sRNAs, experiments, replicates, base_path, o
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("config")
-    parser.add_argument("sRNAs_amount")
+    parser.add_argument("sRNAs_number")
     parser.add_argument("--RNAseq_counts", default=None)
 
     args = parser.parse_args()
@@ -130,8 +130,8 @@ def main():
     sRNAs = get_RNA_types("sRNA", config["rna_types_excel"])
     all_genes = get_annotation(config["annotation_path"], separate_id_name=True)["name"].values.tolist()
     sRNAs = [i for i in sRNAs if i in all_genes]
-    chimeras_bar_plot(int(args.sRNAs_amount), sRNAs, config["experiments"], config["replicates"], config["base_path"], True, args.RNAseq_counts)
-    chimeras_bar_plot(int(args.sRNAs_amount), sRNAs, config["experiments"], config["replicates"], config["base_path"], False, args.RNAseq_counts)
+    chimeras_bar_plot(int(args.sRNAs_number), sRNAs, config["experiments"], config["replicates"], config["base_path"], True, args.RNAseq_counts)
+    chimeras_bar_plot(int(args.sRNAs_number), sRNAs, config["experiments"], config["replicates"], config["base_path"], False, args.RNAseq_counts)
 
 
 
