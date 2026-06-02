@@ -54,8 +54,6 @@ def RNA1_RNA2_annotations(chr_dic, base_path, experiments, rna_types_excel, anno
     if not os.path.exists(output_path):
         os.makedirs(output_path)
     for experiment in experiments:
-        # if chrom == CHR2 and treatment == "Hfq_":
-        #     continue
         df = pd.read_excel(os.path.join(base_path, "RILseq_unified_results.xlsx"), sheet_name=experiment)
         if chrom is not None:
             df = df[(df["RNA1 chromosome"] == chrom) & (df["RNA2 chromosome"] == chrom)]
@@ -63,6 +61,7 @@ def RNA1_RNA2_annotations(chr_dic, base_path, experiments, rna_types_excel, anno
             chr1, chr2 = chr_dic.keys()
             df = df[((df["RNA1 chromosome"] == chr1) & (df["RNA2 chromosome"] == chr2)) |
                     ((df["RNA1 chromosome"] == chr2) & (df["RNA2 chromosome"] == chr1))]
+        print("is empty", df.empty)
         df["RNA1_annotation"] = df["RNA1 name"].apply(get_gene_annotation, genes=genes, tRNAs=tRNAs, sRNAs=sRNAs, oRNAs=oRNAs)
         df["RNA2_annotation"] = df["RNA2 name"].apply(get_gene_annotation, genes=genes, tRNAs=tRNAs, sRNAs=sRNAs, oRNAs=oRNAs)
         cur_options = list(set(df["RNA1_annotation"].values.tolist() + df["RNA2_annotation"].values.tolist()))
@@ -86,7 +85,8 @@ def RNA1_RNA2_annotations(chr_dic, base_path, experiments, rna_types_excel, anno
         for option1 in options:
             for option2 in options:
                 if (option1, option2) in small_df_pairs:
-                    results[option1][option2] = dic[(option1, option2)]
+                    # results[option1][option2] = dic[(option1, option2)]
+                    results.loc[option2, option1] = dic[(option1, option2)]
         for annot in [True, False]:
             plt.figure()
             sns.heatmap(results, annot=annot, cmap='Blues', fmt=".6g", annot_kws={"size": 8})
