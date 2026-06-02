@@ -7,9 +7,10 @@ def main():
     parser = argparse.ArgumentParser()
 
     parser.add_argument("config")
+    parser.add_argument("file_names")
     parser.add_argument("--annotations", default=True)
 
     args = parser.parse_args()
     config = load_config(args.config)
-    merge_RILseq_results(config["base_path"], config["annotation_path"], config["rna_types_excel"], args.annotations)
+    merge_RILseq_results(config["base_path"], config["annotation_path"], config["rna_types_excel"], args.file_name, args.annotations)
 

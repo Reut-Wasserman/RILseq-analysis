@@ -47,9 +47,9 @@ def RNA1_RNA2_annotations(chr_dic, base_path, experiments, rna_types_excel, anno
     genes = get_annotation(annotation_path, chromosome=chrom, separate_id_name=True)["name"].values.tolist()
     sRNAs, tRNAs, oRNAs = get_RNAs_types(rna_types_excel)
     if chrom:
-        dir_ = chr_dic[chrom] + "annotation"
+        dir_ = chr_dic[chrom] + "_annotation"
     else:
-        dir_ = "_".join(chr_dic.keys()) + "annotation"
+        dir_ = "_".join(chr_dic.keys()) + "_annotation"
     output_path = os.path.join(base_path, dir_)
     if not os.path.exists(output_path):
         os.makedirs(output_path)

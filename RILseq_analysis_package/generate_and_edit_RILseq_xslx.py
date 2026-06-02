@@ -23,9 +23,19 @@ def find_genomic_annotation(gene, sRNAs_list, tRNAs_list, all_genes_list):
     return "unknown"
 
 
-def merge_RILseq_results(base_path, annotation_path, rna_types_excel, add_genomic_annotation=True):
-    # unified = pd.ExcelWriter(os.path.join(base_path, 'RILseq_unified_results.xlsx'))
-    # single = pd.ExcelWriter(os.path.join(base_path, 'RILseq_single_results.xlsx'))
+def create_names_dic(file_names):
+    dic = {}
+    with open(file_names) as f:
+        line = f.readline()
+        while line:
+            line = line.split("\t")
+            dic[line[0]] = line[1]
+            line = f.readline()
+    return dic
+
+
+def merge_RILseq_results(base_path, annotation_path, rna_types_excel, file_names, add_genomic_annotation=True):
+    names_dic = create_names_dic(file_names)
     with pd.ExcelWriter(os.path.join(base_path, 'RILseq_unified_results.xlsx')) as unified, pd.ExcelWriter(os.path.join(base_path, 'RILseq_single_results.xlsx')) as single:
         for file in os.listdir(base_path):
             if file.endswith("sig_interactions.txt"):
@@ -37,17 +47,11 @@ def merge_RILseq_results(base_path, annotation_path, rna_types_excel, add_genomi
                         genes_names = get_annotation(annotation_path, separate_id_name=True)["name"].values.tolist()
                         df["Genomic annotation of RNA1"] = df["RNA1 name"].apply(find_genomic_annotation, sRNAs_list=sRNAs_list, tRNAs_list=tRNAs_list, all_genes_list=genes_names)
                         df["Genomic annotation of RNA2"] = df["RNA2 name"].apply(find_genomic_annotation, sRNAs_list=sRNAs_list, tRNAs_list=tRNAs_list, all_genes_list=genes_names)
+                    sheet_name = names_dic[file]
                     if file.startswith("unified"):
-                        sheet_name = file.replace("unified_", "").replace("_all_fragments_l25.txt_sig_interactions.txt", "").replace("_mapping", "")
                         df.to_excel(unified, sheet_name=sheet_name, index=False)
                     else:
-                        sheet_name = file.replace("cutadapt_bwa.bam_mapping_all_fragments_l25.txt_sig_interactions.txt", "S_chimeras")
-                        sheet_name = sheet_name.replace("cutadapt_bwa.bam_sig_interactions.txt", "S_chimeras")
-                        if sheet_name.startswith("RILSeq_"):
-                            sheet_name = sheet_name.replace("RILSeq_", "")
                         df.to_excel(single, sheet_name=sheet_name, index=False)
-    # unified.save()
-    # single.save()
 
 
 def find_number_of_libraries_helper(name1, name2, start1, end1, start2, end2, chr1, chr2, strand1, strand2, df):
