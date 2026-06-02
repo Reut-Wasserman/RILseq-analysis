@@ -29,7 +29,7 @@ def create_names_dic(file_names):
         line = f.readline()
         while line:
             line = line.split("\t")
-            dic[line[0]] = line[1]
+            dic[line[0]] = line[1].strip()
             line = f.readline()
     return dic
 
