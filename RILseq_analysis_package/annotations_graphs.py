@@ -49,7 +49,7 @@ def RNA1_RNA2_annotations(chr_dic, base_path, experiments, rna_types_excel, anno
     if chrom:
         dir_ = chr_dic[chrom] + "_annotation"
     else:
-        dir_ = "_".join(chr_dic.keys()) + "_annotation"
+        dir_ = "_".join(chr_dic.values()) + "_annotation"
     output_path = os.path.join(base_path, dir_)
     if not os.path.exists(output_path):
         os.makedirs(output_path)
@@ -84,8 +84,7 @@ def RNA1_RNA2_annotations(chr_dic, base_path, experiments, rna_types_excel, anno
         for option1 in options:
             for option2 in options:
                 if (option1, option2) in small_df_pairs:
-                    results[option1][option2] = dic[(option1, option2)]
-                    # results.loc[option2, option1] = dic[(option1, option2)]
+                    results.loc[option2, option1] = dic[(option1, option2)]
         print(results)
         print(os.path.join(output_path, f"{experiment}_{chimeras_or_fragments}.png"))
         for annot in [True, False]:
