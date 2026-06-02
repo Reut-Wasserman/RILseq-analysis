@@ -44,6 +44,9 @@ def RNA1_RNA2_annotations(chr_dic, base_path, experiments, rna_types_excel, anno
     :param chrom: if None, create the heatmaps base on the chimeras between the two chromosomes. Else, create the heatmaps
      base on the chimeras of the given chromosome.
     """
+    excel_file = pd.ExcelFile(os.path.join(base_path, "RILseq_unified_results.xlsx"))
+    sheets = excel_file.sheet_names
+    print(sheets)
     genes = get_annotation(annotation_path, chromosome=chrom, separate_id_name=True)["name"].values.tolist()
     sRNAs, tRNAs, oRNAs = get_RNAs_types(rna_types_excel)
     if chrom:
