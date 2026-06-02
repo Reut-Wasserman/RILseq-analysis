@@ -64,7 +64,7 @@ def main():
 
     args = parser.parse_args()
 
-    base_path = oad_config(args.config)["base_path"]
+    base_path = load_config(args.config)["base_path"]
     venn_path = os.path.join(base_path, "venn_diagrams")
     if not os.path.exists(venn_path):
         os.makedirs(venn_path)
