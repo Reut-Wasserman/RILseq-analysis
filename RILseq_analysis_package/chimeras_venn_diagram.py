@@ -46,7 +46,7 @@ def plot(chr_lst, conditions_to_compare, output_path, RILseq_path):
         plt.figure()
         venn2([experiments_chimeras[conditions[0]], experiments_chimeras[conditions[1]]],
               set_labels=(conditions[0], conditions[1]),
-              set_colors=("SkyBlue", "Salmon", "SkyBlue"))
+              set_colors=("SkyBlue", "Salmon"))
         plt.savefig(os.path.join(output_path, f"{conditions[0]}_and_{conditions[1]}_venn.jpg"))
         with open(os.path.join(output_path, f"{conditions[0]}_and_{conditions[1]}_chimeras_pairs.txt"), "w") as f:
             pairs = experiments_chimeras[conditions[0]] & experiments_chimeras[conditions[1]]
