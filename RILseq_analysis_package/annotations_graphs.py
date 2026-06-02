@@ -159,6 +159,7 @@ def chimeras_annotations(chr_dic, experiments, base_path, annotation_path, rna_t
     plt.xticks(rotation=-45, ha='left')
     handles, labels = h.get_legend_handles_labels()
     plt.legend(handles[::-1], labels[::-1], loc=(1.1, 0))
+    plt.tight_layout()
     plt.savefig(os.path.join(base_path, f"{chimeras_or_fragments}_annotation_fractions.png"))
 
 
