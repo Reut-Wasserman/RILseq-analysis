@@ -34,7 +34,6 @@ def get_all_conditions(conditions):
 
 
 def plot(chr_lst, conditions_to_compare, output_path, RILseq_path):
-    """Plot the venn diagrams according to VENN_CONDITIONS and writes the overlapping pairs into a file."""
     experiments_chimeras = {}
     for condition in get_all_conditions(conditions_to_compare):
         if chr_lst:
@@ -59,14 +58,18 @@ def main():
     parser = argparse.ArgumentParser()
 
     parser.add_argument("config", help="Path to yaml configuration file.")
-    parser.add_argument("output_path", help="Output path.")
     parser.add_argument("conditions_pairs",
                         help="List of tuples. Each tuple contain two conditions to plot.")
     parser.add_argument("--chr", help="List of chromosomes. Include chimeras from those chromosomes only.")
 
     args = parser.parse_args()
 
-    plot(args.chr, args.conditions_pairs, args.output_path, load_config(args.config)["base_path"])
+    base_path = oad_config(args.config)["base_path"]
+    venn_path = os.path.join(base_path, "venn_diagrams")
+    if not os.path.exists(venn_path):
+        os.makedirs(venn_path)
+
+    plot(args.chr, args.conditions_pairs, venn_path, base_path)
 
 
 
