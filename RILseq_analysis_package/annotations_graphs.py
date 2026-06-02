@@ -61,10 +61,10 @@ def RNA1_RNA2_annotations(chr_dic, base_path, experiments, rna_types_excel, anno
             chr1, chr2 = chr_dic.keys()
             df = df[((df["RNA1 chromosome"] == chr1) & (df["RNA2 chromosome"] == chr2)) |
                     ((df["RNA1 chromosome"] == chr2) & (df["RNA2 chromosome"] == chr1))]
-        print("is empty", df.empty)
         df["RNA1_annotation"] = df["RNA1 name"].apply(get_gene_annotation, genes=genes, tRNAs=tRNAs, sRNAs=sRNAs, oRNAs=oRNAs)
         df["RNA2_annotation"] = df["RNA2 name"].apply(get_gene_annotation, genes=genes, tRNAs=tRNAs, sRNAs=sRNAs, oRNAs=oRNAs)
         cur_options = list(set(df["RNA1_annotation"].values.tolist() + df["RNA2_annotation"].values.tolist()))
+        print(cur_options)
         options = ["3UTR", "5UTR", "CDS", "AS", "IGR", "sRNA", "tRNA", "IGT"] #"oRNA"
 
         if chimeras_or_fragments == "chimeras":
