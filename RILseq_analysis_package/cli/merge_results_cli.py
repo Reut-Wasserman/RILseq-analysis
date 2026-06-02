@@ -12,5 +12,5 @@ def main():
 
     args = parser.parse_args()
     config = load_config(args.config)
-    merge_RILseq_results(config["base_path"], config["annotation_path"], config["rna_types_excel"], args.file_name, args.annotations)
+    merge_RILseq_results(config["base_path"], config["annotation_path"], config["rna_types_excel"], args.file_names, args.annotations)
 
