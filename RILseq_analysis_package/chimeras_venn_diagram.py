@@ -58,8 +58,7 @@ def main():
     parser = argparse.ArgumentParser()
 
     parser.add_argument("config", help="Path to yaml configuration file.")
-    parser.add_argument("conditions_pairs",
-                        help="List of tuples. Each tuple contain two conditions to plot.")
+    parser.add_argument("conditions_pairs")
     parser.add_argument("--chr", help="List of chromosomes. Include chimeras from those chromosomes only.")
 
     args = parser.parse_args()
@@ -69,8 +68,8 @@ def main():
     if not os.path.exists(venn_path):
         os.makedirs(venn_path)
 
-    plot(args.chr, args.conditions_pairs, venn_path, base_path)
+    pairs = args.conditions_pairs.split(",")
+    pairs = [i.split("-") for i in pairs]
 
-
-
+    plot(args.chr, pairs, venn_path, base_path)
 
