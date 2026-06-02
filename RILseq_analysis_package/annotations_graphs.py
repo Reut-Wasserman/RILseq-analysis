@@ -78,9 +78,9 @@ def RNA1_RNA2_annotations(chr_dic, base_path, experiments, rna_types_excel, anno
             small_df_pairs = small_df.index
             amount = small_df["interactions"].values
         dic = {}
-        print(amount)
         for i in range(len(amount)):
             dic[small_df_pairs[i]] = amount[i]
+        print(dic)
         results = pd.DataFrame(0, index=options, columns=options)
         for option1 in options:
             for option2 in options:
