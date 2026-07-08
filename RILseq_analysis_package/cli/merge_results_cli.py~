@@ -8,6 +8,7 @@ def main():
 
     parser.add_argument("config")
     parser.add_argument("file_names")
+    parser.add_argument("--annotations", default=True)
     parser.add_argument("--no-annotations", dest="annotations", action="store_false", default=True)
 
     args = parser.parse_args()
