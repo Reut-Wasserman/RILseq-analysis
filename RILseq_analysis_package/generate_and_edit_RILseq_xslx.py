@@ -36,6 +36,8 @@ def create_names_dic(file_names):
 
 def merge_RILseq_results(base_path, annotation_path, rna_types_excel, file_names, add_genomic_annotation=True):
     names_dic = create_names_dic(file_names)
+    write_unified = False
+    write_single = False
     with pd.ExcelWriter(os.path.join(base_path, 'RILseq_unified_results.xlsx')) as unified, pd.ExcelWriter(os.path.join(base_path, 'RILseq_single_results.xlsx')) as single:
         for file in os.listdir(base_path):
             if file.endswith("sig_interactions.txt"):
@@ -50,8 +52,14 @@ def merge_RILseq_results(base_path, annotation_path, rna_types_excel, file_names
                     sheet_name = names_dic[file]
                     if file.startswith("unified"):
                         df.to_excel(unified, sheet_name=sheet_name, index=False)
+                        write_unified = True
                     else:
                         df.to_excel(single, sheet_name=sheet_name, index=False)
+                        write_single = True
+        if not write_unified:
+            pd.DataFrame().to_excel(unified, sheet_name="Empty", index=False)
+        if not write_single:
+            pd.DataFrame().to_excel(single, sheet_name="Empty", index=False)
 
 
 def find_number_of_libraries_helper(name1, name2, start1, end1, start2, end2, chr1, chr2, strand1, strand2, df):
