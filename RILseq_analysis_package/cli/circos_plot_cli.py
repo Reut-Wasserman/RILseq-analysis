@@ -13,15 +13,11 @@ def main():
     parser.add_argument("--genes", default=None,
                         help="Plot only the chimeras of the genes in the list.")
     parser.add_argument("--present_chr", default=None, help="Plot only the chimeras of the given chromosome")
-    parser.add_argument("--out_path", default=None)
     args = parser.parse_args()
     config = load_config(args.config)
 
     base_path = config["base_path"]
-    if args.out_path is None:
-        circos_path = os.path.join(base_path, "circos_plots")
-    else:
-        circos_path = args.out_path
+    circos_path = os.path.join(base_path, "circos_plots")
     if not os.path.exists(circos_path):
         os.makedirs(circos_path)
 
