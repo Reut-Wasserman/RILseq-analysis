@@ -59,7 +59,7 @@ def main():
 
     parser.add_argument("config", help="Path to yaml configuration file.")
     parser.add_argument("conditions_pairs")
-    parser.add_argument("--chr", help="List of chromosomes. Include chimeras from those chromosomes only.")
+    parser.add_argument("--chr", help="String of chromosomes separated by a comma. Include chimeras from those chromosomes only.")
 
     args = parser.parse_args()
 
@@ -71,5 +71,6 @@ def main():
     pairs = args.conditions_pairs.split(",")
     pairs = [i.split("-") for i in pairs]
 
-    plot(args.chr, pairs, venn_path, base_path)
+    chr_list = args.chr.split(",")
+    plot(chr_list, pairs, venn_path, base_path)
 
