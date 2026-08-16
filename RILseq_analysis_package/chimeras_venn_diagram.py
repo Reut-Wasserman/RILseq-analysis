@@ -55,11 +55,13 @@ def plot(chr_lst, conditions_to_compare, output_path, RILseq_path):
 
 
 def main():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser("Generate Venn diagrams of chimeras pairs between two conditions. RNA1/RNA2 positions are ignored.")
 
-    parser.add_argument("config", help="Path to yaml configuration file.")
-    parser.add_argument("conditions_pairs")
-    parser.add_argument("--chr", help="String of chromosomes separated by a comma. Include chimeras from those chromosomes only.")
+    parser.add_argument("config", help="Path to the YAML configuration file.")
+    parser.add_argument("conditions_pairs", help="Pairs of experiments to compare, with the two conditions separated by '-'. "
+     "Multiple pairs can be separated by commas. "
+     "Example: exp1-exp2,exp3-exp4 creates two Venn diagrams: one comparing exp1 and exp2, and the other comparing exp3 and exp4.")
+    parser.add_argument("--chr", help="Comma-separated list of chromosomes to include. If not provided, chimeras from all chromosomes are included.")
 
     args = parser.parse_args()
 
@@ -71,6 +73,9 @@ def main():
     pairs = args.conditions_pairs.split(",")
     pairs = [i.split("-") for i in pairs]
 
-    chr_list = args.chr.split(",")
+    if args.chr is not None:
+        chr_list = args.chr.split(",")
+    else:
+        chr_list = None
     plot(chr_list, pairs, venn_path, base_path)
 

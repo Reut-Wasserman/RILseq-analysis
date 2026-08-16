@@ -123,7 +123,7 @@ def two_genomes_circos_plot_half_circle(circos_path, base_path, chr_sizes, chr_d
                            header=["Chromosome", "chromStart", "chromEnd", "Chromosome.1", "chromStart.1", "chromEnd.1", "PlotColor"], index=False)
 
 
-def two_genomes_circos_plot_real_proportions(base_path, chr_sizes, chr_dic, mark_step1, mark_step2, present_chr=None, gene_list=None):
+def two_genomes_circos_plot_real_proportions(circos_path, base_path, chr_sizes, chr_dic, mark_step1, mark_step2, present_chr=None, gene_list=None):
     """
     Generates files required for creating circos plot of two genomes. Use the output files for circos_plot.R script.
     """
@@ -142,7 +142,7 @@ def two_genomes_circos_plot_real_proportions(base_path, chr_sizes, chr_dic, mark
                              "chromStart":chrI_range + chrII_range,
                              "chromEnd":[i+1 for i in chrI_range] +[i+1 for i in chrII_range],
                              "Gene":convert_to_kb_mb(chrI_range+chrII_range)})
-    scale_df.to_csv(os.path.join(base_path, "circos_plots", "two_genomes_scale_real_proportions.csv"), index=False)
+    scale_df.to_csv(os.path.join(circos_path, "circos_plots", "two_genomes_scale_real_proportions.csv"), index=False)
 
     RILseq_excel = pd.ExcelFile(os.path.join(base_path, "RILseq_unified_results.xlsx"))
     for experiment in RILseq_excel.sheet_names:
@@ -163,17 +163,10 @@ def two_genomes_circos_plot_real_proportions(base_path, chr_sizes, chr_dic, mark
         if gene_list is not None:
             genes = "_".join(gene_list)
             file_name += genes
-        chimeras_df.to_csv(os.path.join(base_path, "circos_plots", f"{file_name}.csv"),
+        chimeras_df.to_csv(os.path.join(circos_path, "circos_plots", f"{file_name}.csv"),
                            columns=["RNA1 chromosome", "Start of RNA1 first read", "Start of RNA1 last read", "RNA2 chromosome", "Start of RNA2 last read", "Start of RNA2 first read", "PlotColor"],
                            header=["Chromosome", "chromStart", "chromEnd", "Chromosome.1", "chromStart.1", "chromEnd.1", "PlotColor"], index=False)
 
 
-
-# if __name__ == "__main__":
-#     two_genomes_circos_plot_half_circle()
-#     two_genomes_circos_plot_half_circle(["preS"])
-#     two_genomes_circos_plot_half_circle(["lpr2"])
-#     two_genomes_circos_plot_real_proportions()
-#     E_coli_circos_plot()
 
 

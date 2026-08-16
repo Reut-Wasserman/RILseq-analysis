@@ -120,18 +120,23 @@ def chimeras_bar_plot(sRNAs_amount, sRNAs, experiments, replicates, base_path, o
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("config")
-    parser.add_argument("sRNAs_number")
-    parser.add_argument("--RNAseq_counts", default=None)
+    parser = argparse.ArgumentParser(description="Create stacked bar plots showing the percentage of sRNAs "
+                "among RIL-seq chimeras, fragments and reads.")
+    parser.add_argument("config", help="Path to the YAML configuration file.")
+    parser.add_argument("sRNAs_number", type=int,
+                        help="Number of the most abundant sRNAs to show individually in the plots. "
+                             "All remaining sRNAs are grouped as 'other sRNAs'.")
+    parser.add_argument("--RNAseq_counts", default=None,
+                        help="Path to an RNA-seq counts table. If provided, an additional graph showing sRNA percentages "
+                             "based on the RNA-seq results will be generated.")
 
     args = parser.parse_args()
     config = load_config(args.config)
     sRNAs = get_RNA_types("sRNA", config["rna_types_excel"])
     all_genes = get_annotation(config["annotation_path"], separate_id_name=True)["name"].values.tolist()
     sRNAs = [i for i in sRNAs if i in all_genes]
-    chimeras_bar_plot(int(args.sRNAs_number), sRNAs, config["experiments"], config["replicates"], config["base_path"], True, args.RNAseq_counts)
-    chimeras_bar_plot(int(args.sRNAs_number), sRNAs, config["experiments"], config["replicates"], config["base_path"], False, args.RNAseq_counts)
+    chimeras_bar_plot(args.sRNAs_number, sRNAs, config["experiments"], config["replicates"], config["base_path"], True, args.RNAseq_counts)
+    chimeras_bar_plot(args.sRNAs_number, sRNAs, config["experiments"], config["replicates"], config["base_path"], False, args.RNAseq_counts)
 
 
 

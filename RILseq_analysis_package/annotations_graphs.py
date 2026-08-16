@@ -164,9 +164,9 @@ def chimeras_annotations(chr_dic, experiments, base_path, annotation_path, rna_t
 
 
 def main():
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(description="Create annotation heatmaps and annotation fraction plots for RIL-seq chimeras and fragments.")
 
-    parser.add_argument("config", help="Path to yaml configuration file.")
+    parser.add_argument("config", help="Path to the YAML configuration file.")
 
     args = parser.parse_args()
     config = load_config(args.config)
@@ -179,8 +179,6 @@ def main():
         chimeras_annotations(config["chr_dic"], config["experiments"], config["base_path"], config["annotation_path"], config["rna_types_excel"], type_)
 
 
-# if __name__ == '__main__':
-#     main()
 
 
 

@@ -18,21 +18,15 @@ def filter_chr_genes(annotation_path, old_file_path, new_file, chromosome, sep="
 
 
 def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("input")
-    parser.add_argument("output")
-    parser.add_argument("chr")
-    parser.add_argument("config")
-    parser.add_argument("--sep", default="\t")
-    parser.add_argument("--names_col", default="Unnamed: 0")
-    parser.add_argument("--identifier", default="name")
+    parser = argparse.ArgumentParser(description="Filter a file and keep only genes belonging to a specified chromosome.")
+    parser.add_argument("input", help="Path to the input file.")
+    parser.add_argument("output", help="Path to the output file.")
+    parser.add_argument("chr", help="Chromosome to keep, according to the chromosome names in the annotation file.")
+    parser.add_argument("config", help="Path to the YAML configuration file.")
+    parser.add_argument("--sep", default="\t", help="Column separator used in the input and output files (default: tab).")
+    parser.add_argument("--names_col", default="Unnamed: 0", help="Name of the column containing gene names (default: there is no column name).")
+    parser.add_argument("--identifier", default="name", help="Type of gene identifier to use from the annotation file (default: name).")
 
     args = parser.parse_args()
 
     filter_chr_genes(load_config(args.config)["annotation_path"], args.input, args.output, args.chr, args.sep, args.names_col, args.identifier)
-
-
-# if __name__ == '__main__':
-#     file = os.path.join(BASE_PATH, r"RNASeq\all_counts_table.txt")
-#     filter_chr_genes(file, os.path.join(BASE_PATH, r"RNASeq\all_counts_table_E_coli_genes.txt"), "chrI")
-#     filter_chr_genes(file, os.path.join(BASE_PATH, r"RNASeq\all_counts_table_lambda_genes.txt"), "chrII")
