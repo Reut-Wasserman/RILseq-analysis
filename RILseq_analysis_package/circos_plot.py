@@ -127,14 +127,6 @@ def two_genomes_circos_plot_real_proportions(circos_path, base_path, chr_sizes, 
     """
     Generates files required for creating circos plot of two genomes. Use the output files for circos_plot.R script.
     """
-    # annotations_df = get_annotation(separate_id_name=True)
-    # annotations_df.rename(columns={"name": "Gene", "chr": "Chromosome", "start": "chromStart", "end": "chromEnd"}, inplace=True)
-    # for genome, genome_name in CHR_DIC.items():
-    #     annotations_df["Chromosome"][annotations_df["Chromosome"] == genome] = genome_name
-    # annotations_df.to_csv(os.path.join(BASE_PATH, r"RILseq\circos_plots\two_genomes_genes_real_proportions.csv"),
-    #                        columns=["Chromosome", "chromStart", "chromEnd", "Gene"],
-    #                        header=["Chromosome", "chromStart", "chromEnd", "Gene"], index=False)
-
     chr1, chr2 = chr_sizes.keys()
     chrI_range = list(range(0, chr_sizes[chr1], mark_step1))
     chrII_range = list(range(0, chr_sizes[chr2], mark_step2))
@@ -142,7 +134,7 @@ def two_genomes_circos_plot_real_proportions(circos_path, base_path, chr_sizes, 
                              "chromStart":chrI_range + chrII_range,
                              "chromEnd":[i+1 for i in chrI_range] +[i+1 for i in chrII_range],
                              "Gene":convert_to_kb_mb(chrI_range+chrII_range)})
-    scale_df.to_csv(os.path.join(circos_path, "circos_plots", "two_genomes_scale_real_proportions.csv"), index=False)
+    scale_df.to_csv(os.path.join(circos_path, "two_genomes_scale_real_proportions.csv"), index=False)
 
     RILseq_excel = pd.ExcelFile(os.path.join(base_path, "RILseq_unified_results.xlsx"))
     for experiment in RILseq_excel.sheet_names:
@@ -163,7 +155,7 @@ def two_genomes_circos_plot_real_proportions(circos_path, base_path, chr_sizes, 
         if gene_list is not None:
             genes = "_".join(gene_list)
             file_name += genes
-        chimeras_df.to_csv(os.path.join(circos_path, "circos_plots", f"{file_name}.csv"),
+        chimeras_df.to_csv(os.path.join(circos_path, f"{file_name}.csv"),
                            columns=["RNA1 chromosome", "Start of RNA1 first read", "Start of RNA1 last read", "RNA2 chromosome", "Start of RNA2 last read", "Start of RNA2 first read", "PlotColor"],
                            header=["Chromosome", "chromStart", "chromEnd", "Chromosome.1", "chromStart.1", "chromEnd.1", "PlotColor"], index=False)
 
