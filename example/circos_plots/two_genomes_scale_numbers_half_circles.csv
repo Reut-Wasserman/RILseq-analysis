@@ -1,0 +1,11 @@
+Chromosome,chromStart,chromEnd,Gene
+E. coli,0,1,0 MB
+E. coli,1000000,1000001,1 MB
+E. coli,2000000,2000001,2 MB
+E. coli,3000000,3000001,3 MB
+E. coli,4000000,4000001,4 MB
+lambda,0,1,0 KB
+lambda,960000,960001,10 KB
+lambda,1920000,1920001,20 KB
+lambda,2880000,2880001,30 KB
+lambda,3840000,3840001,40 KB
