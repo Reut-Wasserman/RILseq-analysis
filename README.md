@@ -96,6 +96,8 @@ The Excel file specified by `rna_types_excel` should contain the following sheet
 
 Each sheet should contain a `Name` column listing the corresponding RNA names.
 
+Experiment names must not contain hyphens (-), spaces, or commas.
+
 ---
 
 # Workflow

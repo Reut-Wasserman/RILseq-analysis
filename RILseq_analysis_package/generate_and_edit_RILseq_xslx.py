@@ -29,6 +29,8 @@ def create_names_dic(file_names):
         line = f.readline()
         while line:
             line = line.split("\t")
+            if "-" in line[1].strip() or " " in line[1].strip() or "," in line[1].strip():
+                raise ValueError("Experiment names must not contain hyphens (-), spaces, or commas.")
             dic[line[0]] = line[1].strip()
             line = f.readline()
     return dic
